@@ -4,11 +4,11 @@
 
 cmake_minimum_required(VERSION 2.8)
 
-project(iqtree)
+project(pda)
 # The version number.
-set (iqtree_VERSION_MAJOR 0)
-set (iqtree_VERSION_MINOR 9)
-set (iqtree_VERSION_PATCH 7)
+set (iqtree_VERSION_MAJOR 1)
+set (iqtree_VERSION_MINOR 0)
+set (iqtree_VERSION_PATCH 0)
 
 set(BUILD_SHARED_LIBS OFF)
 
@@ -93,7 +93,7 @@ include_directories("${PROJECT_BINARY_DIR}")
 include_directories("${PROJECT_BINARY_DIR}/zlib-1.2.7")
 
 
-add_definitions(-DIQ_TREE)
+# add_definitions(-DIQ_TREE)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse3 -std=c++98 -Wall -Wno-unused-function -Wno-sign-compare -Wno-deprecated -pedantic -D_GNU_SOURCE -D__SIM_SSE3 -D_OPTIMIZED_FUNCTIONS")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -msse3 -std=c99 -Wall -Wno-unused-function -Wno-sign-compare -pedantic -D_GNU_SOURCE -D__SIM_SSE3 -D_OPTIMIZED_FUNCTIONS")
 
@@ -197,7 +197,7 @@ else (WIN32)
 endif (WIN32)
 
 # setup the executable name properly
-set_target_properties(iqtree PROPERTIES OUTPUT_NAME "iqtree${EXE_SUFFIX}")
+set_target_properties(iqtree PROPERTIES OUTPUT_NAME "${CMAKE_PROJECT_NAME}${EXE_SUFFIX}")
 
 # strip the release build
 if (CMAKE_BUILD_TYPE STREQUAL "Release") 
@@ -208,7 +208,7 @@ endif()
 # add the install targets
 ##############################################################
 install (TARGETS iqtree DESTINATION bin)
-install (FILES "${PROJECT_SOURCE_DIR}/examples/example.phy" DESTINATION examples)
+#install (FILES "${PROJECT_SOURCE_DIR}/examples/example.phy" DESTINATION examples)
 install (FILES "${PROJECT_SOURCE_DIR}/examples/test.nex" DESTINATION examples)
 install (FILES "${PROJECT_SOURCE_DIR}/examples/test.budget" DESTINATION examples)
 install (FILES "${PROJECT_SOURCE_DIR}/examples/test.area.nex" DESTINATION examples)
@@ -238,13 +238,13 @@ else(WIN32)
   set(CPACK_GENERATOR "TGZ")
   set(CPACK_SOURCE_GENERATOR "TGZ")
 endif(WIN32)
-#set(CPACK_SOURCE_PACKAGE_FILE_NAME
-#  "${CMAKE_PROJECT_NAME}-${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}")
+set(CPACK_SOURCE_PACKAGE_FILE_NAME
+  "${CMAKE_PROJECT_NAME}-${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}")
 set(CPACK_SOURCE_IGNORE_FILES
   "/build.*/;/debug.*/;/examples/;/manual/;/.bzr/;~$;/\\\\.svn/;/\\\\.git/;${CPACK_SOURCE_IGNORE_FILES}")
 
 set(CPACK_PACKAGE_FILE_NAME 
-	"${CMAKE_PROJECT_NAME}${EXE_SUFFIX}-${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}-${CMAKE_SYSTEM_NAME}")
+	"${CMAKE_PROJECT_NAME}${EXE_SUFFIX}-${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}-${CMAKE_SYSTEM_NAME}")
 
 set(CPACK_STRIP_FILES TRUE)
 

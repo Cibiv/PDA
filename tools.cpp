@@ -1130,11 +1130,13 @@ void parseArg(int argc, char *argv[], Params &params) {
                 params.split_weight_summary = SW_AVG_PRESENT;
             } else if (strcmp(argv[cnt], "-iwc") == 0) {
                 params.test_input = TEST_WEAKLY_COMPATIBLE;
+#ifdef IQ_TREE
             } else if (strcmp(argv[cnt], "-aln") == 0 || strcmp(argv[cnt], "-s") == 0) {
                 cnt++;
                 if (cnt >= argc)
                     throw "Use -aln, -s <alignment_file>";
                 params.aln_file = argv[cnt];
+#endif
             } else if (strcmp(argv[cnt], "-z") == 0) {
                 cnt++;
                 if (cnt >= argc)
@@ -1151,6 +1153,7 @@ void parseArg(int argc, char *argv[], Params &params) {
                 params.do_weighted_test = true;
             } else if (strcmp(argv[cnt], "-zau") == 0) {
                 params.do_au_test = true;
+#ifdef IQ_TREE
             } else if (strcmp(argv[cnt], "-sp") == 0) {
                 cnt++;
                 if (cnt >= argc)
@@ -1168,6 +1171,7 @@ void parseArg(int argc, char *argv[], Params &params) {
             	    throw "Use -spj <type of partition model>";
                 params.partition_file = argv[cnt];
                 params.partition_type = 'j';
+#endif
             } else if (strcmp(argv[cnt], "-keep_empty_seq") == 0) {
             	params.remove_empty_seq = false;
             } else if (strcmp(argv[cnt], "-sf") == 0) {
@@ -1796,8 +1800,7 @@ void usage(char* argv[], bool full_command) {
     printCopyright(cout);
     cout << "Usage: " << argv[0] << " [OPTIONS] <file_name> [<output_file>]" << endl;
     cout << "GENERAL OPTIONS:" << endl;
-    cout << "  -hh               Print this help dialog" << endl;
-    cout << "  -h                Print help options for phylogenetic inference" << endl;
+    cout << "  -h                Print this help dialog" << endl;
     cout << "  <file_name>       User tree in NEWICK format or split network in NEXUS format" << endl;
     cout << "  <output_file>     Output file to store results, default is '<file_name>.pda'" << endl;
     cout << "  -k <num_taxa>     Find optimal set of size <num_taxa>" << endl;

@@ -204,10 +204,11 @@ void printCopyright(ostream &out) {
 	out << "-OpenMP";
 	#endif
  	out << " beta version "; 
+	out << iqtree_VERSION_MAJOR << "." << iqtree_VERSION_MINOR << "." << iqtree_VERSION_PATCH;
 #else
  	out << "PDA - Phylogenetic Diversity Analyzer version ";
+	out << iqtree_VERSION_MAJOR << "." << iqtree_VERSION_MINOR;
 #endif
-	out << iqtree_VERSION_MAJOR << "." << iqtree_VERSION_MINOR << "." << iqtree_VERSION_PATCH;
 
 #if defined _WIN32 || defined WIN32
 	out << " for Windows";
@@ -227,9 +228,9 @@ void printCopyright(ostream &out) {
 #endif
 
 #ifdef IQ_TREE
-	out << endl << "Copyright (c) 2011-2013 Nguyen Lam Tung, Olga Chernomor, Bui Quang Minh, and Arndt von Haeseler." << endl << endl;
+	out << endl << "Copyright (c) 2011-2013 Nguyen Lam Tung, Olga Chernomor, Arndt von Haeseler, and Bui Quang Minh." << endl << endl;
 #else
-	out << endl << "Copyright (c) 2006-2008 Bui Quang Minh, Steffen Klaere and Arndt von Haeseler." << endl << endl;
+	out << endl << "Copyright (c) 2006-2013 Bui Quang Minh, Olga Chernomor, Steffen Klaere, and Arndt von Haeseler." << endl << endl;
 #endif
 }
 
