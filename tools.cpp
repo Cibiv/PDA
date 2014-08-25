@@ -1801,12 +1801,13 @@ void usage(char* argv[], bool full_command) {
     cout << "Usage: " << argv[0] << " [OPTIONS] <file_name> [<output_file>]" << endl;
     cout << "GENERAL OPTIONS:" << endl;
     cout << "  -h                Print this help dialog" << endl;
-    cout << "  <file_name>       User tree in NEWICK format or split network in NEXUS format" << endl;
+    cout << "  <file_name>       Input tree in NEWICK/NEXUS format or network in NEXUS format" << endl;
     cout << "  <output_file>     Output file to store results, default is '<file_name>.pda'" << endl;
-    cout << "  -k <num_taxa>     Find optimal set of size <num_taxa>" << endl;
+    cout << "  -k <num>          Find optimal set of size <num>" << endl;
     cout << "  -k <min>:<max>    Find optimal sets of size from <min> to <max>" << endl;
     cout << "  -k <min>:<max>:<step>" << endl;
     cout << "                    Find optimal sets of size min, min+step, min+2*step,..." << endl;
+    cout << "  -k% <k_percent>   Find optimal set of size in percentage" << endl;
     cout << "  -o <taxon>        Root name to compute rooted PD (default: unrooted)" << endl;
     cout << "  -if <file>        File containing taxa to be included into optimal sets" << endl;
     cout << "  -e <file>         File containing branch/split scale and taxa weights" << endl;
@@ -1837,7 +1838,7 @@ void usage(char* argv[], bool full_command) {
     cout << "                    Find optimal sets with budget min, min+step, min+2*step,..." << endl;
     cout << endl;
     cout << "OPTIONS FOR AREA ANALYSIS:" << endl;
-    cout << "  -ts <taxa_file>   Compute/maximize PD/SD of areas (combine with -k to maximize)" << endl;
+    cout << "  -ts <area_file>   Compute/maximize PD/SD of areas (combine with -k to maximize)" << endl;
     cout << "  -excl             Compute exclusive PD/SD" << endl;
     cout << "  -endem            Compute endemic PD/SD" << endl;
     cout << "  -compl <areas>    Compute complementary PD/SD given the listed <areas>" << endl;
@@ -1845,7 +1846,6 @@ void usage(char* argv[], bool full_command) {
 
     cout << "OPTIONS FOR VIABILITY CONSTRAINTS:" << endl;
     cout << "  -eco <food_web>   File containing food web matrix" << endl;
-    cout << "  -k% <n>           Find optimal set of size relative the total number of taxa" << endl;
     cout << "  -diet <min_diet>  Minimum diet portion (%) to be preserved for each predator" << endl;
     cout << endl;
     //if (!full_command) exit(0);
