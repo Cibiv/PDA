@@ -33,6 +33,10 @@ PDTree::PDTree(Params &params)
 
 void PDTree::init(Params &params) {
 	MTree::init(params.user_file, params.is_rooted);
+	if (params.k_percent != 0) {
+		params.sub_size = params.min_size = (int)(leafNum * params.k_percent*0.01);
+		cout << "INFO: set subset size k to " << params.sub_size << endl;
+	}
 	if (params.is_rooted) {
 		params.sub_size++;
 		params.min_size++;

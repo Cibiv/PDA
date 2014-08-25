@@ -509,7 +509,7 @@ void runPDTree(Params &params)
 		run greedy algorithm
 	*********************************************/
 
-	if (params.sub_size < 2) {
+	if (params.sub_size < 2 && params.k_percent == 0) {
 		outError(ERR_NO_K);
 	}
 
@@ -1099,9 +1099,17 @@ void runPDSplit(Params &params) {
 			int budget = (params.budget >= 0) ? params.budget : sg.getPdaBlock()->getBudget();
 			if (budget < 0 && params.pd_proportion == 0.0) params.run_mode = PD_USER_SET;
 		} else {
+			if (params.k_percent) {
+				params.sub_size = (int)(params.k_percent*sg.getNAreas()*0.01);
+				cout << "INFO: set area subset size k to " << params.sub_size << endl;
+			}
 			int sub_size = (params.sub_size >= 1) ? params.sub_size : sg.getPdaBlock()->getSubSize();
 			if (sub_size < 1 && params.pd_proportion == 0.0) params.run_mode = PD_USER_SET;
-
+		}
+	} else {
+		if (params.k_percent) {
+			params.sub_size = (int)(params.k_percent*sg.getNTaxa()*0.01);
+			cout << "INFO: set taxon subset size k to " << params.sub_size << endl;
 		}
 	}
 
