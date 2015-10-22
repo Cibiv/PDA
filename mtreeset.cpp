@@ -398,6 +398,8 @@ void MTreeSet::convertSplits(vector<string> &taxname, SplitGraph &sg, SplitIntMa
 				hash_ss.insertSplit(sp, tree_weights[tree_id]);
  			}
 		}
+        if (size() == 1)
+            sg.splits->cycle = isg->splits->cycle;
 		delete isg;
 	}
 

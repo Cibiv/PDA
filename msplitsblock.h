@@ -36,6 +36,7 @@ public:
 
 	friend class SplitGraph;
 	friend class MTree;
+    friend class MTreeSet;
 
 	/**
 		constructor, assigning an associated splits graph

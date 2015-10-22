@@ -175,7 +175,7 @@ void PDNetwork::readInitialSet(Params &params) {
 }
 
 void PDNetwork::proceedInitialSet() {
-	double total_w = trunc(abs(calcWeight())+1);
+	double total_w = trunc(fabs(calcWeight())+1);
 	// get the set of initial taxa
 	set<int> iset;
 	for (IntVector::iterator it2 = initialset.begin(); it2 != initialset.end(); it2++)
@@ -238,6 +238,7 @@ void PDNetwork::initPDMin() {
 	@return minimum budget required
 */
 int PDNetwork::calcCost(IntVector &taxset) {
+    if (pda->costs.empty()) return 0;
 	int sum = 0;
 	for (IntVector::iterator it = taxset.begin(); it != taxset.end(); it++)
 		sum += pda->costs[*it];
@@ -1078,8 +1079,12 @@ void PDNetwork::printOutputSetScore(Params &params, vector<SplitSet> &pd_set) {
 			//continue;
 		if ((*it).empty()) continue;
 		c_num = 0;
-		if (params.nr_output == 1)
-			scoreout << (*it)[0]->countTaxa() << "  " << (it)->getWeight() << endl;
+		if (params.nr_output == 1) {
+            int count = (*it)[0]->countTaxa();
+            if (params.run_mode == PD_USER_SET || !isPDArea())
+                count = count - params.is_rooted;
+			scoreout << count << "  " << (it)->getWeight() << endl;
+        }
 
 		for (SplitSet::iterator it2 = (*it).begin(); it2 != (*it).end(); it2++, c_num++ ){
 			Split *this_set = *it2;
@@ -1105,7 +1110,7 @@ void PDNetwork::printOutputSetScore(Params &params, vector<SplitSet> &pd_set) {
 				out.open(filename);
 				if (params.run_mode == PD_USER_SET || !isPDArea()) {
 					for (i = 0; i < getNTaxa(); i++) 
-						if (this_set->containTaxon(i))
+						if (this_set->containTaxon(i) && getTaxa()->GetTaxonLabel(i) != ROOT_NAME)
 							out << getTaxa()->GetTaxonLabel(i) << endl;
 				} else {
 					for (i = 0; i < getSetsBlock()->getNSets(); i++) 
@@ -1115,6 +1120,8 @@ void PDNetwork::printOutputSetScore(Params &params, vector<SplitSet> &pd_set) {
 				out.close();
 				//cout << "Taxa list printed to " << filename << endl;
 			} else if (params.nr_output == 1) {
+                if (params.run_mode == PD_USER_SET || !isPDArea())
+                    count = count - params.is_rooted;
 				out << count << "  " << this_set->getWeight() << " " << 
 					this_set->getWeight()  / total_weight << " " <<
 					calcCost(*this_set) << " " << computeBoundary(*this_set) << " " <<
@@ -1122,7 +1129,7 @@ void PDNetwork::printOutputSetScore(Params &params, vector<SplitSet> &pd_set) {
 
 				if (params.run_mode == PD_USER_SET || !isPDArea()) {
 					for (i = 0; i < getNTaxa(); i++) 
-						if (this_set->containTaxon(i))
+						if (this_set->containTaxon(i) && getTaxa()->GetTaxonLabel(i) != ROOT_NAME)
 							out << getTaxa()->GetTaxonLabel(i) << endl;
 				} else {
 					for (i = 0; i < getSetsBlock()->getNSets(); i++) 

@@ -207,7 +207,7 @@ void printCopyright(ostream &out) {
 	out << iqtree_VERSION_MAJOR << "." << iqtree_VERSION_MINOR << "." << iqtree_VERSION_PATCH;
 #else
  	out << "PDA - Phylogenetic Diversity Analyzer version ";
-	out << iqtree_VERSION_MAJOR << "." << iqtree_VERSION_MINOR;
+	out << iqtree_VERSION_MAJOR << "." << iqtree_VERSION_MINOR << "." << iqtree_VERSION_PATCH;
 #endif
 
 #if defined _WIN32 || defined WIN32
@@ -794,7 +794,7 @@ void summarizeSplit(Params &params, PDNetwork &sg, vector<SplitSet> &pd_set, PDR
 				out << endl << "Size-k   PD-score   %PD-score   #PD-sets" << endl;
 
 			int sizex = subsize;
-			double total = sg.calcWeight();
+			double total = fabs(sg.calcWeight() - sg.getExtraPD()); // 2015-10-22: negative in case of "-min" option
 
 			for (it = pd_set.begin(); it != pd_set.end(); it++, sizex+=stepsize) {
 				out.width(6);
@@ -1803,7 +1803,12 @@ extern "C" void funcAbort(int signal_number)
       because abort() was called, your program will exit or crash anyway
       (with a dialog box on Windows).
      */
-	cout << endl << "*** IQ-TREE CRASHES WITH SIGNAL ";
+#ifdef IQ_TREE     
+	cout << endl << "*** IQ-TREE";
+#else
+	cout << endl << "*** PDA";
+#endif
+    cout << "CRASHES WITH SIGNAL ";
 	switch (signal_number) {
 		case SIGABRT: cout << "ABORTED"; break;
 		case SIGFPE:  cout << "ERRONEOUS NUMERIC"; break;
@@ -1811,7 +1816,11 @@ extern "C" void funcAbort(int signal_number)
 		case SIGSEGV: cout << "SEGMENTATION FAULT"; break;
 	}
 	cout << endl << "*** For bug report please send developers:" << endl << "***    Log file: " << _log_file;
+#ifdef IQ_TREE     
 	cout << endl << "***    Alignment files (if possible)" << endl;
+#else
+	cout << endl << "***    Tree file or split network file (if possible)" << endl;
+#endif
 	funcExit();
 	signal(signal_number, SIG_DFL);
 }

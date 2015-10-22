@@ -26,7 +26,7 @@ SplitSet::SplitSet()
 
 double SplitSet::getWeight() {
 	if (empty())
-		return 0;
+		return INT_MIN;
 	//assert(!empty());
 	return (*begin())->getWeight();
 }

@@ -257,6 +257,10 @@ public:
 	 */
 	void speciesList(vector<string> *speciesNames);
 
+    double getExtraPD() {
+        return extra_pd;
+    }
+
 protected:
 
 	/**

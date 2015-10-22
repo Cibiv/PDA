@@ -33,7 +33,7 @@ CircularNetwork::CircularNetwork(Params &params) : PDNetwork(params) {
 
 void CircularNetwork::findPD(Params &params, vector<SplitSet> &taxa_set, 
 	vector<int> &taxa_order) {
-	
+    
 	if (!isCircular() || params.run_mode == EXHAUSTIVE || params.run_mode == GREEDY 
 		|| params.run_mode == LINEAR_PROGRAMMING || isPDArea()) {
 		// call inherited findPD if condition not met
