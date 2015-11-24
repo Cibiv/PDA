@@ -1576,7 +1576,10 @@ void PDNetwork::lpK_BudgetConstraint(ostream &out, Params &params, int total_siz
 				out << " -" << coeff << " y" << i << "_" << j;
 		}
 	}
-	out << " <= " << total_size;
+    if (isBudgetConstraint())
+        out << " <= " << total_size;
+    else
+        out << " = " << total_size;
 	
 	// constraint for k-set or total budget
 	/*
@@ -1631,12 +1634,17 @@ void PDNetwork::lpSplitConstraint_RS(ostream &out, Params &params, IntVector &y_
 
 	// adding the constraint for splits
 	for (spit = begin(),i=0; spit != end(); spit++,i++) {
-		if (y_value[i] >= 0) continue;
+    
+        // BQM 2015-11-24: fix issue with wrong reduction then y_value[i] == 1        
+		if (y_value[i] == 0 || y_value[i] > 1 || (y_value[i] == 1 && !isBudgetConstraint())) continue;
 		Split *sp = (*spit);
 
 		if (count1[i] < nareas && (isBudgetConstraint() || count1[i] <= nareas - total_size))
 		{
-			out << "y" << i;
+            if (y_value[i] == 1)
+                out << 1;
+            else
+                out << "y" << i;
 			if (!params.gurobi_format)
 				out << " <=";
 			for (j = 0; j < nareas; j++) {
@@ -1656,7 +1664,11 @@ void PDNetwork::lpSplitConstraint_RS(ostream &out, Params &params, IntVector &y_
 		if (count2[i] < nareas && (isBudgetConstraint() || count2[i] <= nareas - total_size))
 		{
 			sp->invert(); // scan the invert
-			out << "y" << i;
+            
+            if (y_value[i] == 1)
+                out << 1;
+            else
+                out << "y" << i;
 			if (!params.gurobi_format)
 				out << " <=";
 			for (j = 0; j < nareas; j++) {
