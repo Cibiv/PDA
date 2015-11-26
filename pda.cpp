@@ -809,11 +809,12 @@ void summarizeSplit(Params &params, PDNetwork &sg, vector<SplitSet> &pd_set, PDR
 			}
 
 			out << endl;
-			if (!params.find_all)
-				out << "Note: You did not choose the option to find multiple optimal PD sets." << endl <<
+			if (!params.find_all) {
+                if (params.detected_mode != LINEAR_PROGRAMMING)
+                    out << "Note: You did not choose the option to find multiple optimal PD sets." << endl <<
 					"That's why we only reported one PD-set per size-k or budget. If you want" << endl <<
-					"to determine all multiple PD-sets, use the '-a' option.";
-			else {
+					"to determine all multiple PD-sets, use the '-all' option.";
+			} else {
 				out << "Note: The number of multiple optimal PD sets to be reported is limited to " << params.pd_limit << "." << endl <<
 					"There might be cases where the actual #PD-sets exceeds that upper-limit but" << endl <<
 					"won't be listed here. Please refer to the above list to identify such cases." << endl <<
